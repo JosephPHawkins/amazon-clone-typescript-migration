@@ -253,11 +253,11 @@ Potential improvements for the project:
 - [ ] Backend API integration
 - [ ] Database integration
 
-## 📝 License
+## License
 
 This project is for educational and portfolio purposes.
 
-## 👤 Author
+## Author
 
 **Your Name**
 - GitHub: https://github.com/JosephPHawkins
