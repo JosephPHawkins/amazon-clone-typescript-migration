@@ -382,7 +382,7 @@ Potential improvements for continued TypeScript adoption:
 **Joseph Hawkins**
 
 - GitHub: [@JosephPHawkins](https://github.com/JosephPHawkins)
-- LinkedIn: [joseph-hawkins](www.linkedin.com/in/joseph-hawkins-0aa960259)
+- LinkedIn: [joseph-hawkins](https://www.linkedin.com/in/joseph-hawkins-0aa960259)
 
 ---
 
