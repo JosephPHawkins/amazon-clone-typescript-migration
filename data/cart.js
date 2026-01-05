@@ -41,15 +41,15 @@ function saveToStorage() {
 
 
 
-export function addToCart(productId) {
+export function addToCart(productId, quantityVal) {
   const existingItem = cart.find((item) => item.productId === productId);
 
   if (existingItem) {
-    existingItem.quantity += 1;
+    existingItem.quantity += quantityVal;
   } else {
     cart.push({
       productId,
-      quantity: 1,
+      quantity: quantityVal,
       deliveryOptionId: "1",
     });
   }

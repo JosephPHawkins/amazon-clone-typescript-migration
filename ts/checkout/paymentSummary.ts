@@ -4,6 +4,10 @@ import { getDeliveryOption } from "../../data/deliveryOptions.js";
 import { formatPrice } from "../utils/money.js";
 import { addToOrders } from "../../data/orders.js";
 
+import { CartItem, Product, DeliveryOption } from "../types/index.js"
+
+
+
 export function renderPaymentSummary(){
 
 
@@ -11,12 +15,17 @@ export function renderPaymentSummary(){
   let deliveryPriceTotal = 0;
   let itemCount = 0;
 
-  cart.forEach((item) => {
-    const product = getProduct(item.productId);
+  cart.forEach((item: CartItem) => {
+    const product = getProduct(item.productId) as Product | undefined;
+
+    if(!product) {
+      console.error(`product not found ${item.productId}`)
+      return 
+    }
     productPrice += product.priceCents * item.quantity;
     itemCount += item.quantity;
 
-    const deliveryOption = getDeliveryOption(item.deliveryOptionId);
+    const deliveryOption = getDeliveryOption(item.deliveryOptionId) as DeliveryOption | undefined;
     if (deliveryOption) {
       deliveryPriceTotal += deliveryOption.priceCents;
     }
@@ -60,10 +69,24 @@ export function renderPaymentSummary(){
     </button>
   `;
 
-  document.querySelector('.payment-summary').innerHTML = orderSummaryHtml;
+  const paymentSummary = document.querySelector('.payment-summary')
+
+  if (!paymentSummary) {
+    console.error('payment summary is not found')
+    return 
+  }
+
+  paymentSummary.innerHTML = orderSummaryHtml;
+
+  const placeOrder = document.querySelector('.js-place-order')
+
+  if (!placeOrder) {
+    console.error('something went wrong with placing order')
+    return 
+  }
 
   
-    document.querySelector('.js-place-order').addEventListener('click', async () => {
+    placeOrder.addEventListener('click', async () => {
 
     const response = await fetch('https://supersimplebackend.dev/orders', {
       method: 'POST', 

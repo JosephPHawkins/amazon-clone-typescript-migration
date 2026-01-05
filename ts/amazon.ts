@@ -1,6 +1,7 @@
 import {cart, addToCart, loadFromStorage} from '../data/cart.js'
 import { formatPrice } from './utils/money.js';
 import { loadProducts, products } from '../data/products.js'
+import {CartItem} from "./types/index.js"
 
 
 loadProducts(renderAmazon)
@@ -9,6 +10,11 @@ loadProducts(renderAmazon)
 function renderAmazon(): void{
 
 const productsContainers  = document.querySelector('.products-grid')
+
+if (!productsContainers) {
+  console.error('products container not locaateed')
+  return 
+}
 
 productsContainers.innerHTML = ''
 
@@ -71,21 +77,30 @@ products.forEach(product  => {
 
 function updateCartQuantity(){
     let cartQuantityTotal = 0
-    cart.forEach((cartItem) => {
+    cart.forEach((cartItem: CartItem) => {
         cartQuantityTotal += cartItem.quantity
     })
 
-    const cartNumber = document.querySelector('.js-cart-quantity')
-    cartNumber.innerHTML = cartQuantityTotal
+    const cartNumber = document.querySelector<HTMLElement>('.js-cart-quantity')
+
+    if (cartNumber) {
+      cartNumber.innerHTML = String(cartQuantityTotal) 
+    }
+
+    
 }
 
-const buttonElement = document.querySelectorAll('.js-add-to-cart')
+const buttonElement = document.querySelectorAll<HTMLButtonElement>('.js-add-to-cart')
 
 buttonElement.forEach(button => {
     button.addEventListener('click', () => {
         const productId = button.dataset.productId
 
-        const productQuantityValue = document.querySelector(`.js-quantity-selector-${productId}`)
+        if (!productId) return 
+
+        const productQuantityValue = document.querySelector<HTMLSelectElement>(`.js-quantity-selector-${productId}`)
+
+        if (!productQuantityValue) return 
 
         const quantityVal = Number(productQuantityValue.value)
 

@@ -6,21 +6,26 @@
     "moduleResolution": "node",
     "allowJs": true,
     "checkJs": false,
-    "outDir": "./dist",
-    "rootDir": "./",
+    "outDir": "./scripts",
     "strict": false,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "noEmitOnError": false
   },
   "include": [
-    "ts/**/*"
-  ],
+    "ts/**/*.ts"
+  ], 
+  
   "exclude": [
     "node_modules",
-    "dist"
+    "dist",
+    "scripts",
+    "data",
+    "ts/vendor"
   ]
 }
+
 
