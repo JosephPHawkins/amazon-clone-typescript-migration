@@ -1,26 +1,17 @@
-import {cart, addToCart, loadFromStorage} from '../data/cart.js'
+import { cart, addToCart } from '../data/cart.js';
 import { formatPrice } from './utils/money.js';
-import { loadProducts, products } from '../data/products.js'
-
-
-loadProducts(renderAmazon)
-
-
-function renderAmazon(){
-
-const productsContainers = document.querySelector('.products-grid')
-
-if (!productsContainers) {
-  console.error('products container not locaateed')
-  return 
-}
-
-// Build HTML string first - MUCH faster than innerHTML +=
-let productsHTML = ''
-
-products.forEach(product => {
-
-    productsHTML += `
+import { loadProducts, products } from '../data/products.js';
+loadProducts(renderAmazon);
+function renderAmazon() {
+    const productsContainers = document.querySelector('.products-grid');
+    if (!productsContainers) {
+        console.error('products container not locaateed');
+        return;
+    }
+    // Build HTML string first - MUCH faster than innerHTML +=
+    let productsHTML = '';
+    products.forEach(product => {
+        productsHTML += `
 
         <div class="product-container">
           <div class="product-image-container">
@@ -76,50 +67,37 @@ products.forEach(product => {
             Add to Cart
           </button>
         </div>
-    `
-});
-
-// Set innerHTML once - this is MUCH faster
-productsContainers.innerHTML = productsHTML
-
-// Attach event listeners AFTER DOM is updated
-attachEventListeners()
-updateCartQuantity()
-
+    `;
+    });
+    // Set innerHTML once - this is MUCH faster
+    productsContainers.innerHTML = productsHTML;
+    // Attach event listeners AFTER DOM is updated
+    attachEventListeners();
+    updateCartQuantity();
 }
-
-function updateCartQuantity(){
-    let cartQuantityTotal = 0
+function updateCartQuantity() {
+    let cartQuantityTotal = 0;
     cart.forEach((cartItem) => {
-        cartQuantityTotal += cartItem.quantity
-    })
-
-    const cartNumber = document.querySelector('.js-cart-quantity')
-    
+        cartQuantityTotal += cartItem.quantity;
+    });
+    const cartNumber = document.querySelector('.js-cart-quantity');
     if (cartNumber) {
-      cartNumber.innerHTML = String(cartQuantityTotal)
+        cartNumber.innerHTML = String(cartQuantityTotal);
     }
-
-    
 }
-
-function attachEventListeners(){
-    const buttonElement = document.querySelectorAll('.js-add-to-cart')
-
+function attachEventListeners() {
+    const buttonElement = document.querySelectorAll('.js-add-to-cart');
     buttonElement.forEach(button => {
         button.addEventListener('click', () => {
-            const productId = button.dataset.productId
-
-            if (!productId) return 
-
-            const productQuantityValue = document.querySelector(`.js-quantity-selector-${productId}`)
-
-            if (!productQuantityValue) return 
-
-            const quantityVal = Number(productQuantityValue.value)
-
-            addToCart(productId, quantityVal)
-            updateCartQuantity()
-        })
-    })
+            const productId = button.dataset.productId;
+            if (!productId)
+                return;
+            const productQuantityValue = document.querySelector(`.js-quantity-selector-${productId}`);
+            if (!productQuantityValue)
+                return;
+            const quantityVal = Number(productQuantityValue.value);
+            addToCart(productId, quantityVal);
+            updateCartQuantity();
+        });
+    });
 }

@@ -16,16 +16,19 @@ if (!productsContainers) {
   return 
 }
 
-productsContainers.innerHTML = ''
+// Build HTML string first - MUCH faster than innerHTML +=
+let productsHTML = ''
 
 products.forEach(product  => {
 
-    productsContainers.innerHTML += `
+    productsHTML += `
 
         <div class="product-container">
           <div class="product-image-container">
             <img class="product-image"
-              src="${product.image}">
+              src="${product.image}"
+              loading="lazy"
+              alt="${product.name}">
           </div>
 
           <div class="product-name limit-text-to-2-lines">
@@ -34,7 +37,9 @@ products.forEach(product  => {
 
           <div class="product-rating-container">
             <img class="product-rating-stars"
-              src="${product.getURL()}">
+              src="${product.getURL()}"
+              alt="Rating: ${product.rating.stars} stars"
+              loading="lazy">
             <div class="product-rating-count link-primary">
               ${product.rating.count}
             </div>
@@ -64,7 +69,7 @@ products.forEach(product  => {
           <div class="product-spacer"></div>
 
           <div class="added-to-cart">
-            <img src="images/icons/checkmark.png">
+            <img src="images/icons/checkmark.png" alt="Added to cart" loading="lazy">
             Added
           </div>
 
@@ -74,6 +79,15 @@ products.forEach(product  => {
         </div>
     `
 });
+
+// Set innerHTML once - this is MUCH faster
+productsContainers.innerHTML = productsHTML
+
+// Attach event listeners AFTER DOM is updated
+attachEventListeners()
+updateCartQuantity()
+
+}
 
 function updateCartQuantity(){
     let cartQuantityTotal = 0
@@ -90,26 +104,24 @@ function updateCartQuantity(){
     
 }
 
-const buttonElement = document.querySelectorAll<HTMLButtonElement>('.js-add-to-cart')
+function attachEventListeners(){
+    const buttonElement = document.querySelectorAll<HTMLButtonElement>('.js-add-to-cart')
 
-buttonElement.forEach(button => {
-    button.addEventListener('click', () => {
-        const productId = button.dataset.productId
+    buttonElement.forEach(button => {
+        button.addEventListener('click', () => {
+            const productId = button.dataset.productId
 
-        if (!productId) return 
+            if (!productId) return 
 
-        const productQuantityValue = document.querySelector<HTMLSelectElement>(`.js-quantity-selector-${productId}`)
+            const productQuantityValue = document.querySelector<HTMLSelectElement>(`.js-quantity-selector-${productId}`)
 
-        if (!productQuantityValue) return 
+            if (!productQuantityValue) return 
 
-        const quantityVal = Number(productQuantityValue.value)
+            const quantityVal = Number(productQuantityValue.value)
 
-        addToCart(productId, quantityVal)
-        updateCartQuantity()
+            addToCart(productId, quantityVal)
+            updateCartQuantity()
+        })
     })
-})
-
-updateCartQuantity()
-
 }
 

@@ -10,3 +10,4 @@ rm -rf scripts/ts scripts/data scripts/scripts
 
 echo "Build complete! Your compiled JavaScript files are in the scripts/ directory."
 
+
